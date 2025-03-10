@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LISTE DES Employés</title>
+    <link rel="stylesheet" href="style1.css">
+    <style>
+        table{
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th,td{
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>Les Listes des Employés</h1>
+    <table id="employeeTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Poste</th>
+                <th>Tache</th>
+
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <Script>
+    // Fonction pour récupérer les employés
+        async function fetchEmployees() {
+            const response = await fetch("/employees");
+            const employees = await response.json();
+
+            const tableBody = document.querySelector('#employeeTable tbody');
+            tableBody.innerHTML = ""; //Efface le contenu précedent du tableau
+
+            employees.forEach(employee => {
+                const row = tableBody.insertRow();
+                row.insertCell().textContent = employee.id;
+                row.insertCell().textContent = employee.name;
+                row.insertCell().textContent = employee.position;
+                row.insertCell().textContent = employee.task;
+
+                //Ajout des boutons Modifier et Supprimer
+                const actionsCell = row.insertCell();
+                const editButton = document.createElement('button');
+                editButton.textContent = 'Modifier';
+                editButton.addEventListener('click',() =>editEmployee(employee.id));
+                actionsCell.appenChild(editButton);
+
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Supprimer';
+                deleteButton.addEventListener('click', () => deleteEmployee(employee.id));
+                actionsCell.appenChild(deleteButton);
+            });
+        }
+
+   
+    
+        fetchEmployees();
+    </Script>
+</body>
+<footer><button type="submit"><a href="app.html">RETOUR</a></button></footer>
+</html>

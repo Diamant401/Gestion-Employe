@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des employés</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+   
+
+    <h2>Ajouter un employé</h2>
+    <form id="addEmployeeForm">
+        <label for="name">Nom:</label>
+        <input type="text" id="name" name="name"><br>
+        <label for="position">Poste:</label>
+        <input type="text" id="position" name="position"><br>
+        <label for="task">Tache:</label>
+        <input type="text" id="task" name="task"><br>
+        <button type="submit">Ajouter</button>
+    </form>
+
+    <h2><button type="submit"><a href="liste.html">Les Listes</a></button></h2>
+    <script>
+     
+    
+        //Fonction pour ajouter un employé
+        async function addEmployee(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const position = document.getElementById('position').value;
+            const task = document.getElementById('task').value;
+            
+            const response = await fetch("/employees",{
+                method: 'POST',
+                headers:{
+                    'Content_Type': 'application/json',
+                },
+                body: JSON.stringify({name,position,task}),
+            });
+
+            if(response.ok){
+                alert("VOTRE DONNEE EST AJOUTE")
+            }else{
+                alert('Erreur lors de l\'ajout de l\'employé');
+            }
+        }
+        
+        //Ajoute un écouteur d'événement au formulaire
+        document.getElementById('addEmployeeForm').addEventListener('submit',addEmployee);
+       
+    </script>
+</body>
+</html>
